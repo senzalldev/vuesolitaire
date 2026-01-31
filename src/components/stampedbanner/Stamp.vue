@@ -3,6 +3,8 @@
             :style="style">{{text}}</div>
 </template>
 <style>
+@import "tailwindcss";
+
 .stamped {
     position: absolute;
     left: 200px;

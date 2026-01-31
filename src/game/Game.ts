@@ -86,7 +86,7 @@ export type GameAction =
     ;
 
 export const gameReducer = (state: SolitaireState, action: GameAction) => {
-    console.log("action: " + action.type)
+    //console.log("action: " + action.type)
     switch (action.type) {
         case "game-new": {
             const s = makeInitialState()

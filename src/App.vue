@@ -10,3 +10,8 @@ const gameContext = useGameContext()
 provide(GameContextTag, gameContext)
 
 </script>
+
+<style>
+@import "tailwindcss";
+@import "./style.css";
+</style>
