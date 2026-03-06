@@ -1,12 +1,10 @@
 <template>
-    <div v-if="status == 'running'" class="absolute bottom-0 overflow-hidden rounded bg-gray-800 shadow-md flex flex text-sm items-center p-2 gap-2">
-        <div className="flex items-center rounded-md bg-gray-600 text-gray-100 text-sm px-3 py-1">Stats</div>
-        <div class="flex grow overflow-hidden bg-white py-1 text-gray-600 rounded-lg w-[310px] ">
-            <div class="flex flex gap-4 px-4">
-                <div>Moves {{ moves }}</div>
-                <div>Points {{ points }}</div>
-                <div>Time {{ time() }}</div>
-            </div>
+    <div v-if="status == 'running'" class="absolute bottom-0 overflow-hidden rounded-lg bg-[#0f0c1a]/90 border border-[#2e2650] shadow-lg flex items-center text-sm p-2 gap-2">
+        <div class="flex items-center rounded bg-[#1e1836] text-[#b8922a] text-xs font-semibold px-3 py-1 tracking-wider uppercase">Stats</div>
+        <div class="flex items-center gap-4 px-3 text-[#e8d5a3] text-xs">
+            <div>Moves <span class="text-[#d4aa4a] font-semibold">{{ moves }}</span></div>
+            <div>Points <span class="text-[#d4aa4a] font-semibold">{{ points }}</span></div>
+            <div>Time <span class="text-[#d4aa4a] font-semibold">{{ time() }}</span></div>
         </div>
     </div>
 </template>

@@ -60,11 +60,17 @@ export function getPilePosition(availableSize: Size, geometry: Geometry, pile: P
 export function useRendererContext(elem: Ref<HTMLElement | null>) {
     const { width, height } = useWindowSize()
     const geometry = computed(() => {
-        let scale = 1
+        let scale: number
         if (width.value >= 1200 && height.value >= 940) {
             scale = 1.5
         } else if (width.value >= 1080 && height.value >= 780) {
             scale = 1.25
+        } else if (width.value >= 820) {
+            scale = 1.0
+        } else {
+            // Mobile: fit 7 columns + 6 gaps leaving ~8px each side
+            // board width = scale * 796, so scale = (availW - 16) / 796
+            scale = Math.max(0.4, (width.value - 16) / 796)
         }
         return makeGeometry(scale)
     })

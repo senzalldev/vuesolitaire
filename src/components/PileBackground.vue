@@ -1,6 +1,6 @@
 <template>
     <div :data-pile="pileId" class="flex items-center cursor-pointer select-none absolute" :style="mainStyle" >
-        <div class="bg-gray-500 border border-gray-600 shadow-lg rounded-lg flex justify-center items-center text-gray-600 capitalize text-2xl"
+        <div class="bg-[#0d0b18] border-2 border-dashed border-[#b8922a] rounded-lg flex justify-center items-center text-[#b8922a] opacity-50 capitalize text-xl font-semibold tracking-widest"
             :style="contentStyle">{{ label}}</div>
     </div>
 

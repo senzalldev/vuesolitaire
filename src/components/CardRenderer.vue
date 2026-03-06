@@ -1,7 +1,7 @@
 <template>
     <div :data-card="GameUtil.cardId(card)" :class="clazzes.join(' ')" :style="style">
         <div class="bg-white border shadow-lg rounded-lg flex justify-center items-center">
-            <img draggable="false" class="select-none " :src="image" :alt="GameUtil.cardToString(card)" />
+            <img draggable="false" class="select-none" :src="image" :alt="GameUtil.cardToString(card)" />
         </div>
     </div>
 </template>
@@ -49,7 +49,7 @@ const style = computed(() => {
     }
 
     const duration = ["stopped", "won", "launching"].indexOf(gameContext.state.value.status || "") != -1 ? 750 : undefined
-    const delay = ["stopped", "won", "launching"].indexOf(gameContext.state.value.status || "") != -1 
+    const delay = ["stopped", "won", "launching"].indexOf(gameContext.state.value.status || "") != -1
         ? Math.floor(cardIndex * 250 / reactivePile.cards.length)
         : undefined
 
@@ -59,12 +59,11 @@ const style = computed(() => {
         width: width.value + "px",
         transitionProperty: "all",
         transitionDuration: (duration ?? 0) + "ms",
-        transitionDelay: (delay ?? 0)+ "ms",
+        transitionDelay: (delay ?? 0) + "ms",
         left: position.x !== undefined ? position.x + "px" : "auto",
         top: position.y !== undefined ? position.y + "px" : "auto",
         zIndex: zIndex
     }
-    // if not dragged animate always
     if (dragIndex != -1) {
         style.transitionProperty = "none"
         style.zIndex = DRAG_LAYER + cardIndex
@@ -74,14 +73,12 @@ const style = computed(() => {
         style.transitionTimingFunction = "ease-out"
     }
     if (releasingDrag.value) {
-        //style.zIndex = DRAG_LAYER + cardIndex
         style.animation = "bounce 150ms ease-in-out"
     }
     return style
 })
 
 watchEffect(() => {
-    //console.log("change " + GameUtil.cardToString(card) + " " + dragged)
     if (!dragged.value) {
         setTimeout(() => {
             releasingDrag.value = false
@@ -97,10 +94,8 @@ const clazzes = computed(() => {
 })
 
 const image = computed(() => {
-    const reactiveCard = (GameUtil.findCardById(gameContext.state.value, GameUtil.cardId(card))!)
-    return reactiveCard.side == "back" ? "/vuesolitaire/cards/back.png" : GameUtil.cardToImage(reactiveCard)
+    const reactiveCard = GameUtil.findCardById(gameContext.state.value, GameUtil.cardId(card))!
+    return reactiveCard.side == "back" ? "/cards/back.svg" : GameUtil.cardToImage(reactiveCard)
 })
-
-
 
 </script>

@@ -1,8 +1,9 @@
 <template>
-    <div class="h-1 grow shrink flex flex-col bg-gray-500 p-4 relative">
-        <div ref="elem" class="h-1 grow shrink flex flex-col p-4 relative" 
+    <div class="h-1 grow shrink flex flex-col bg-[#0a0812] relative">
+        <div ref="elem" class="h-1 grow shrink flex flex-col relative"
+            style="touch-action: none;"
             @mousedown="mouseDown"
-            @mousemove="mouseMove" 
+            @mousemove="mouseMove"
             @mouseup="endDrag"
             @mouseleave="endDrag"
             @touchstart="mouseDown"
@@ -151,15 +152,20 @@ const mouseMove = (event: MouseEvent | TouchEvent) => {
 
 const endDrag = () => {
     // have to ignore the next click event
-    ignoreClick.value = false  
+    ignoreClick.value = false
     if (draggedCard.value) {
         if (destinationPile.value?.type === "table") {
             const currentPile = GameUtil.findPileForCard(gameContext.state.value, draggedCard.value)
             const currentPileId = GameUtil.pileId(currentPile!)
             const destinationPileId = GameUtil.pileId(destinationPile.value)
-            console.log("currentPileId", currentPileId, "destinationPileId", destinationPileId)
             if (currentPileId !== destinationPileId) {
                 gameContext?.dispatch({ type: "drop-table", cards: allDraggedCards.value, table: destinationPile.value })
+                ignoreClick.value = true
+            }
+        } else if (destinationPile.value?.type === "stack" && allDraggedCards.value.length === 1) {
+            const currentPile = GameUtil.findPileForCard(gameContext.state.value, draggedCard.value)
+            if (GameUtil.pileId(currentPile!) !== GameUtil.pileId(destinationPile.value)) {
+                gameContext?.dispatch({ type: "drop-stack", card: draggedCard.value, stack: destinationPile.value })
                 ignoreClick.value = true
             }
         }

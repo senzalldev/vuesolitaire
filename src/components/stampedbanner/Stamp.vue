@@ -13,7 +13,9 @@
     animation-duration: 0.5s;
     opacity: 0;
     animation-fill-mode: forwards;
-    @apply bg-gray-700;
+    background-color: #b8922a;
+    border: 2px solid #d4aa4a;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.6);
 }
 </style>
 <script setup lang="ts">

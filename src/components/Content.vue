@@ -1,13 +1,12 @@
 <template>
     <div class="h-1 grow shrink flex flex-col">
         <Menubar @menuAction ="handleMenubarAction" />
-        <div class="relative bg-indigo-800 h-1 grow shrink flex flex-col overflow-hidden">
-            <div v-if="width < 820"
-                class="flex grow items-center justify-center text-center text-7xl bg-black font-bold p-4 text-white z-[1000]">Please use a
-                wider browser window</div>
-            <div v-else-if="height < 640"
-                class="flex grow items-center justify-center text-center text-7xl bg-black font-bold p-4 text-white z-[1000]">Please use a
-                taller browser window
+        <div class="relative bg-[#0a0812] h-1 grow shrink flex flex-col overflow-hidden">
+            <div v-if="height < 400"
+                class="flex grow flex-col items-center justify-center text-center bg-[#0a0812] font-bold p-8 z-[1000]">
+                <div class="text-5xl text-[#b8922a] mb-4">⚔️</div>
+                <div class="text-2xl text-[#e8d5a3]">Please use a taller window</div>
+                <div class="text-sm text-[#6b5a8a] mt-2">Your battlefield needs more height</div>
             </div>
             <GameRenderer v-else ></GameRenderer>
 
@@ -20,22 +19,23 @@
             </template>
             <StatsPanel></StatsPanel>
             <div v-if="gameWon" class="inset-0 absolute flex flex-col items-center justify-center z-20">
-                <div class="absolute inset-0 bg-black opacity-60"></div>
-                <StampedBanner text="You Won!"></StampedBanner>
-                <div class="text-white text-4xl z-50 pt-16 tracking-tighter">Your score: {{ points }}, No of moves: {{ moves }}</div>
+                <div class="absolute inset-0 bg-black opacity-70"></div>
+                <StampedBanner text="Victory!"></StampedBanner>
+                <div class="text-[#e8d5a3] text-3xl z-50 pt-16 tracking-tighter font-bold">
+                    Score: <span class="text-[#d4aa4a]">{{ points }}</span> &nbsp;·&nbsp; Moves: <span class="text-[#d4aa4a]">{{ moves }}</span>
+                </div>
             </div>
         </div>
-        <ModalDialog :show="aboutShown" :onClose="() => aboutShown = false" title="About Vue-Solitaire">
+        <ModalDialog :show="aboutShown" :onClose="() => aboutShown = false" title="Senzall's Solitaire — Tyrian Edition">
             <div class="flex flex-col gap-2">
-                <p>Small Solitair Game in Vue. Cards are just divs, no Canvas used.</p>
-                <p>by Stepan Rutz <a href="mailto:stepan.rutz@gmx.de">stepan.rutz AT gmx.de</a>.</p>
-                <p>Projectpage incl. sourcecode <ExternalLink href="https://github.com/srutz/vuesolitaire/">https://github.com/srutz/vuesolitaire/</ExternalLink>.</p>
+                <p>Klondike Solitaire, forged in the fires of Tyria. Cards are divs — no Canvas, no compromise.</p>
+                <p>GW2 theme by <ExternalLink href="https://senzall.com">Senzall</ExternalLink> · Engine by Stepan Rutz · WTFPL license.</p>
                 <div class="h-2"></div>
-                <p>Card-Images are are from <ExternalLink href="https://deckofcardsapi.com/">https://deckofcardsapi.com/</ExternalLink></p>
-                <p>Stock Photos from <ExternalLink href="https://pexels.com/">https://pexels.com/</ExternalLink></p>
-                <p>Made with: Typescript, Vue, Vite, Tailwind</p>
-                <div class="flex flex-col bg-black p-4 self-strecth items-center relative min-h-64">
-                    <StyledImage v-for="(card,index) in aboutCards" :key="index" :imageSource="'/vuesolitaire/cards/' + card + '.svg'" :style="getAboutStyle(index)">
+                <p>Card images from <ExternalLink href="https://deckofcardsapi.com/">Deck of Cards API</ExternalLink></p>
+                <p>Built with: TypeScript, Vue 3, Vite, Tailwind CSS v4</p>
+                <p class="text-xs text-gray-500">Guild Wars 2 is a trademark of ArenaNet, LLC. This is unofficial fan content.</p>
+                <div class="flex flex-col bg-black p-4 self-stretch items-center relative min-h-64">
+                    <StyledImage v-for="(card,index) in aboutCards" :key="index" :imageSource="'/cards/' + card + '.svg'" :style="getAboutStyle(index)">
                     </StyledImage>
                 </div>
             </div>
@@ -75,7 +75,7 @@ import StatsPanel from './StatsPanel.vue'
 import StyledImage from './StyledImage.vue'
 
 
-const { width, height } = useWindowSize()
+const { height } = useWindowSize()
 const gameContext = inject(GameContextTag)!
 
 useUrlState(gameContext)
@@ -125,6 +125,9 @@ const getAboutStyle = (index: number) => ({
 const aboutCards = [ "0H", "JS", "QD", "KH", "AS", "AD" ]
 const frame = ref(0)
 onMounted(() => {
+    if (gameContext.state.value.status === "stopped") {
+        startNewGame()
+    }
     const i = setInterval(() => {
         if (frame.value == 0) {
             angle.value = 12

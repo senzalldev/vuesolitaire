@@ -82,6 +82,7 @@ export type GameAction =
     | { type: "draw-waste"; card: PlayingCard }
     | { type: "draw-table"; card: PlayingCard, side: Side }
     | { type: "drop-table"; cards: PlayingCard[]; table: Pile }
+    | { type: "drop-stack"; card: PlayingCard; stack: Pile }
     | { type: "empty-stock"; }
     ;
 
@@ -191,6 +192,27 @@ export const gameReducer = (state: SolitaireState, action: GameAction) => {
                             //s.stats.points += 10
                         }
                     }
+                }
+            }
+            checkForWin(s, moveAllowed)
+            return s
+        }
+        /* dropping a single card onto a foundation stack */
+        case "drop-stack": {
+            const s = { ...state }
+            if (action.card) {
+                action.card = GameUtil.findCardById(state, GameUtil.cardId(action.card))!
+            }
+            action.stack = GameUtil.findPileById(s, GameUtil.pileId(action.stack))!
+            const pile = GameUtil.findPileForCard(s, action.card)
+            let moveAllowed = false
+            if (pile && pile != action.stack) {
+                moveAllowed = stackMoveAllowed(action.stack, action.card)
+                if (moveAllowed) {
+                    const cardIndex = GameUtil.indexOfCard(pile.cards, action.card)
+                    pile.cards.splice(cardIndex, 1)
+                    action.stack.cards.push(action.card)
+                    s.stats.points += 10
                 }
             }
             checkForWin(s, moveAllowed)

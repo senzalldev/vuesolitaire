@@ -47,9 +47,9 @@ const tileheight = height / rows
 const flipped = ref(false)
 const shortDelay = ref(true)
 const images = [
-    "/vuesolitaire/images/image1.jpg",
-    "/vuesolitaire/images/image2.jpg",
-    "/vuesolitaire/images/image3.jpg",
+    "/images/image1.jpg",
+    "/images/image2.jpg",
+    "/images/image3.jpg",
 ]
 const imageIndex = ref(1)
 const globalScale = computed(() => {
